@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MentorHub - Connect with Experts{% endblock %}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #0ea5e9;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --border: #e2e8f0;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            background: #f0f4f8;
+            color: #475569;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        main {
+            flex: 1;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+            padding: 0.75rem 0;
+            margin-bottom: 1.5rem;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: white !important;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar-brand i {
+            margin-right: 0.5rem;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin: 0 0.25rem;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.8rem;
+        }
+        
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.12);
+            transform: translateY(-3px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1.2rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.6rem 1.2rem;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+        
+        /* Forms */
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Alerts */
+        .alert {
+            border-radius: 10px;
+            border: none;
+            padding: 1rem 1.25rem;
+        }
+        
+        .alert-info {
+            background: #dbeafe;
+            color: #0c2d6b;
+        }
+        
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .alert-danger {
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
+        
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+        }
+        
+        .hero h1 {
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+            opacity: 0.95;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Tables */
+        .table {
+            font-size: 0.95rem;
+        }
+        
+        .table thead th {
+            background: var(--light);
+            color: var(--dark);
+            font-weight: 600;
+            border-color: var(--border);
+            padding: 1rem;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        
+        .table tbody td {
+            padding: 1rem;
+            border-color: var(--border);
+            vertical-align: middle;
+        }
+        
+        /* Mentor Cards */
+        .mentor-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .mentor-card:hover {
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.15);
+            transform: translateY(-6px);
+        }
+        
+        .mentor-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .mentor-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+        
+        .mentor-title {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .mentor-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .skill-tag {
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .mentor-meta {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin: 0.35rem 0;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1e293b;
+            color: #cbd5e1;
+            padding: 2rem 1.5rem;
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+        }
+        
+        footer h5 {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        footer a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        footer a:hover {
+            color: var(--primary);
+        }
+        
+        /* Session Status Badges */
+        .badge {
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        
+        .status-requested {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-accepted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-completed {
+            background: #dbeafe;
+            color: #0c2d6b;
+        }
+        
+        .status-cancelled {
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
+        
+        /* Main Content */
+        .main-container {
+            padding: 1rem 0.5rem;
+            flex: 1;
+        }
+        
+        /* Stats */
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .stat-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        .stat-label {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+        
+        .stars {
+            color: #fbbf24;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #94a3b8;
+        }
+        
+        .empty-state i {
+            font-size: 2.5rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 0;
+                margin-bottom: 1rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+            
+            .nav-link {
+                font-size: 0.9rem;
+                margin: 0;
+                padding: 0.5rem 0.5rem !important;
+            }
+            
+            .hero {
+                padding: 2rem 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .card {
+                border-radius: 8px;
+            }
+            
+            .mentor-card {
+                padding: 1rem;
+            }
+            
+            .mentor-avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .mentor-name {
+                font-size: 0.9rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            footer {
+                padding: 1.5rem 1rem;
+            }
+            
+            footer h5 {
+                font-size: 0.95rem;
+                margin-bottom: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 1.5rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.25rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .hero p {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1rem 0.75rem;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .mentor-name {
+                font-size: 0.85rem;
+            }
+            
+            .mentor-title {
+                font-size: 0.8rem;
+            }
+            
+            .table {
+                font-size: 0.85rem;
+            }
+            
+            .table thead th,
+            .table tbody td {
+                padding: 0.75rem;
+            }
+        }
+        
+        /* Utility Classes */
+        .gap-3 {
+            gap: 1rem;
+        }
+        
+        .py-4 {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--dark);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid px-2 px-md-4">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap"></i>MentorHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/mentors">
+                                <i class="fas fa-users"></i> Mentors
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/sessions">
+                                <i class="fas fa-calendar"></i> Sessions
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/messages">
+                                <i class="fas fa-envelope"></i> Messages
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">
+                                <i class="fas fa-user"></i> Profile
+                            </a>
+                        </li>
+                        {% if current_user.is_admin() %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/">
+                                <i class="fas fa-cog"></i> Admin
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-logout" href="/auth/logout">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/auth/login">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/auth/register">
+                                <i class="fas fa-user-plus"></i> Register
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container-fluid px-2 px-md-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                            <i class="fas fa-{{ 'exclamation-circle' if category == 'error' else 'check-circle' }}"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Main Content -->
+        <div class="main-container">
+            <div class="container-fluid px-2 px-md-4">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container-fluid px-2 px-md-4">
+            <div class="row g-3">
+                <div class="col-md-4 col-sm-6">
+                    <h5><i class="fas fa-graduation-cap"></i> MentorHub</h5>
+                    <p class="small mb-0">Connecting students with expert mentors for personalized learning.</p>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled small">
+                        <li><a href="/mentors">Find Mentors</a></li>
+                        <li><a href="/sessions">My Sessions</a></li>
+                        <li><a href="/profile">My Profile</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <h5>Follow Us</h5>
+                    <a href="#" class="me-3"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="me-3"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <hr style="border-color: #475569; margin-top: 1.5rem; margin-bottom: 1rem;">
+            <p class="text-center small mb-0">&copy; 2025 MentorHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Chat with {{ other.name }} - MentorHub{% endblock %}
+{% block content %}
+
+<div class="row" style="height: calc(100vh - 200px);">
+    <div class="col-12 d-flex flex-column">
+        <!-- Header -->
+        <div class="d-flex align-items-center gap-3 pb-3 border-bottom" style="border-color: #e2e8f0;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem;">
+                {{ other.name[0] }}
+            </div>
+            <div>
+                <h6 class="mb-0" style="color: #1e293b;">{{ other.name }}</h6>
+                <small class="text-muted">{{ other.role.title() }}</small>
+            </div>
+            <a href="/messages" class="ms-auto btn btn-sm btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+
+        <!-- Messages -->
+        <div class="flex-grow-1 overflow-y-auto my-3" style="background: #f0f4f8;">
+            {% if thread %}
+                {% for msg in thread %}
+                <div class="mb-3">
+                    {% if msg.sender_id == current_user.id %}
+                        <!-- Sent by current user -->
+                        <div class="d-flex justify-content-end px-3">
+                            <div style="max-width: 70%; background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); color: white; padding: 0.75rem 1rem; border-radius: 12px; border-bottom-right-radius: 4px;">
+                                <p class="mb-1">{{ msg.content }}</p>
+                                <small style="opacity: 0.8; font-size: 0.75rem;">{{ msg.created_at.strftime('%H:%M') }}</small>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Received from other user -->
+                        <div class="d-flex justify-content-start px-3">
+                            <div style="max-width: 70%; background: white; color: #1e293b; padding: 0.75rem 1rem; border-radius: 12px; border-bottom-left-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                <p class="mb-1">{{ msg.content }}</p>
+                                <small style="color: #64748b; font-size: 0.75rem;">{{ msg.created_at.strftime('%H:%M') }}</small>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-5" style="color: #94a3b8;">
+                    <i class="fas fa-comments fa-2x mb-2" style="opacity: 0.5;"></i>
+                    <p>Start the conversation</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Input -->
+        <form method="post" class="pt-3 border-top" style="border-color: #e2e8f0;">
+            {{ form.hidden_tag() }}
+            <div class="input-group" style="gap: 0.75rem;">
+                {% if form.content.errors %}
+                    {{ form.content(class_='form-control is-invalid', placeholder='Type your message...', rows='3') }}
+                    <div class="invalid-feedback">
+                        {% for error in form.content.errors %}
+                            <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.content(class_='form-control', placeholder='Type your message...', rows='3', style='resize: none; border-radius: 8px;') }}
+                {% endif %}
+                {{ form.submit(class_='btn btn-primary', value='Send', style='padding: 0.75rem 1.5rem;') }}
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Auto-scroll to bottom
+    document.addEventListener('DOMContentLoaded', function() {
+        const messagesDiv = document.querySelector('.overflow-y-auto');
+        if (messagesDiv) {
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        // Focus on input
+        document.querySelector('textarea[name=\"content\"]').focus();
+    });
+</script>
+
+{% endblock %}

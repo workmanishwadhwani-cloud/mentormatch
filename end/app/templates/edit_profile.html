@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+          <h2 class="fw-bold text-dark mb-4">Edit Profile</h2>
+
+          <form method="post" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="row">
+              {% for field in form %}
+                {% if field.name != 'csrf_token' and field.type != 'CSRFTokenField' and field.type != 'SubmitField' %}
+                  <div class="col-md-{% if field.type == 'TextAreaField' %}12{% else %}12{% endif %} mb-4">
+                    {% if field.type == 'TextAreaField' %}
+                      {{ field.label(class_='form-label fw-bold') }}
+                      {{ field(class_='form-control form-control-lg', rows=4) }}
+                    {% else %}
+                      {{ field.label(class_='form-label fw-bold') }}
+                      {{ field(class_='form-control form-control-lg') }}
+                    {% endif %}
+                    {% if field.errors %}
+                      <div class="invalid-feedback d-block">
+                        {{ field.errors[0] }}
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            <hr class="my-4">
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a href="/profile" class="btn btn-outline-secondary">Cancel</a>
+              <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-floppy-disk me-2"></i>Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

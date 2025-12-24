@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex align-items-center justify-content-between mb-5">
+    <h1 class="fw-bold text-dark">My Sessions</h1>
+    <a href="/" class="btn btn-outline-primary">
+      <i class="fa-solid fa-plus me-2"></i>Browse Mentors
+    </a>
+  </div>
+
+  {% if sessions %}
+    <div class="row g-4">
+      {% for s in sessions %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card border-0 shadow-sm h-100 transition-transform">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <h5 class="fw-bold text-dark">{{ s.topic }}</h5>
+                <span class="badge {% if s.status == 'accepted' %}bg-success{% elif s.status == 'declined' %}bg-danger{% elif s.status == 'completed' %}bg-primary{% else %}bg-warning{% endif %}">
+                  {{ s.status.title() }}
+                </span>
+              </div>
+
+              <div class="mb-3">
+                {% if current_user.is_student() %}
+                  <p class="text-muted small mb-2">
+                    <i class="fa-solid fa-user-tie me-1"></i>Mentor
+                  </p>
+                  <p class="fw-bold text-dark">
+                    {% if s.mentor_id %}
+                      User #{{ s.mentor_id }}
+                    {% else %}
+                      Unassigned
+                    {% endif %}
+                  </p>
+                {% else %}
+                  <p class="text-muted small mb-2">
+                    <i class="fa-solid fa-user-graduate me-1"></i>Student
+                  </p>
+                  <p class="fw-bold text-dark">
+                    {% if s.student_id %}
+                      User #{{ s.student_id }}
+                    {% else %}
+                      Unassigned
+                    {% endif %}
+                  </p>
+                {% endif %}
+              </div>
+
+              <hr>
+
+              <p class="text-muted small mb-2">
+                <i class="fa-solid fa-calendar me-1"></i>Scheduled
+              </p>
+              <p class="text-dark mb-3">
+                {% if s.scheduled_at %}
+                  {{ s.scheduled_at.strftime('%b %d, %Y at %I:%M %p') }}
+                {% else %}
+                  Not scheduled yet
+                {% endif %}
+              </p>
+
+              {% if s.description %}
+                <hr>
+                <p class="text-muted small mb-2">Description</p>
+                <p class="text-dark small">{{ s.description[:100] }}{% if s.description|length > 100 %}...{% endif %}</p>
+              {% endif %}
+            </div>
+            <div class="card-footer bg-white border-top">
+              <a href="/mentors" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-5">
+      <i class="fa-solid fa-inbox text-muted" style="font-size: 3rem;"></i>
+      <h3 class="mt-4 text-dark">No Sessions Yet</h3>
+      <p class="text-muted mb-4">
+        {% if current_user.is_student() %}
+          Browse mentors and request a session to get started
+        {% else %}
+          Your mentorship sessions will appear here
+        {% endif %}
+      </p>
+      {% if current_user.is_student() %}
+        <a href="/mentors" class="btn btn-primary">Browse Mentors</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .transition-transform {
+    transition: transform 0.2s;
+  }
+  .transition-transform:hover {
+    transform: translateY(-4px);
+  }
+</style>
+{% endblock %}

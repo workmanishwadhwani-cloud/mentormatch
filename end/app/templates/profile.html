@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  {% if current_user.is_authenticated %}
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-5">
+            <div class="text-center mb-4">
+              <div class="mb-3">
+                <div class="rounded-circle bg-gradient p-4 d-inline-block" style="width: 100px; height: 100px; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); display: flex; align-items: center; justify-content: center;">
+                  <i class="fa-solid fa-user text-white" style="font-size: 2.5rem;"></i>
+                </div>
+              </div>
+              <h2 class="fw-bold text-dark mb-1">{{ current_user.name }}</h2>
+              <p class="text-muted mb-3">{{ current_user.email }}</p>
+              <span class="badge bg-primary">{{ current_user.role.title() }}</span>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Student Profile -->
+            {% if current_user.is_student() and profile %}
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <label class="text-muted small fw-bold">ACADEMIC YEAR</label>
+                  <p class="mb-3">{{ profile.academic_year or 'Not specified' }}</p>
+                </div>
+                <div class="col-md-6">
+                  <label class="text-muted small fw-bold">COURSE</label>
+                  <p class="mb-3">{{ profile.course or 'Not specified' }}</p>
+                </div>
+                <div class="col-12">
+                  <label class="text-muted small fw-bold">INTERESTS</label>
+                  <p class="mb-3">{{ profile.interests or 'Not specified' }}</p>
+                </div>
+                <div class="col-12">
+                  <label class="text-muted small fw-bold">LEARNING GOALS</label>
+                  <p>{{ profile.goals or 'Not specified' }}</p>
+                </div>
+              </div>
+            {% endif %}
+
+            <!-- Mentor Profile -->
+            {% if current_user.is_mentor() and profile %}
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <label class="text-muted small fw-bold">TITLE</label>
+                  <p class="mb-3">{{ profile.title or 'Not specified' }}</p>
+                </div>
+                <div class="col-md-6">
+                  <label class="text-muted small fw-bold">EXPERIENCE</label>
+                  <p class="mb-3">{{ profile.years_of_experience or 'N/A' }} years</p>
+                </div>
+                <div class="col-12">
+                  <label class="text-muted small fw-bold">EXPERTISE</label>
+                  <p class="mb-3">{{ profile.skills or 'Not specified' }}</p>
+                </div>
+                <div class="col-12">
+                  <label class="text-muted small fw-bold">HOURLY RATE</label>
+                  <p class="h5">
+                    <strong class="text-success">₹{{ profile.hourly_rate or '0' }}/hour</strong>
+                  </p>
+                </div>
+              </div>
+            {% endif %}
+
+            <hr class="my-4">
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a href="/profile/edit" class="btn btn-primary">
+                <i class="fa-solid fa-pen-to-square me-2"></i>Edit Profile
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="text-center py-5">
+      <i class="fa-solid fa-lock text-muted" style="font-size: 3rem;"></i>
+      <h3 class="mt-4 text-dark">Access Restricted</h3>
+      <p class="text-muted mb-4">Please log in to view your profile</p>
+      <a href="/auth/login" class="btn btn-primary">Go to Login</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

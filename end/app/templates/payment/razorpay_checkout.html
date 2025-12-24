@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+          <h2 class="fw-bold text-dark mb-4">Razorpay Payment Checkout</h2>
+
+          <form id="payment-form" method="POST" action="/payment/verify">
+            <input type="hidden" name="session_id" value="{{ session_id }}">
+            
+            <div class="mb-4 p-4 bg-light rounded">
+              <h5 class="fw-bold mb-3">Amount to Pay</h5>
+              <h3 class="text-success fw-bold">₹{{ amount }}</h3>
+            </div>
+
+            <div class="alert alert-info">
+              <i class="fa-solid fa-lock me-2"></i>
+              Secure payment via Razorpay
+            </div>
+
+            <div id="razorpay-container"></div>
+
+            <div class="d-grid gap-2 mt-4">
+              <button type="button" id="pay-button" class="btn btn-primary btn-lg">
+                <i class="fa-solid fa-credit-card me-2"></i>Pay Now
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.getElementById('pay-button').addEventListener('click', function() {
+  var options = {
+    key: "{{ key_id }}",
+    amount: {{ amount * 100 }},
+    currency: "INR",
+    name: "MentorConnect",
+    description: "Session Payment",
+    order_id: "{{ order_id }}",
+    handler: function(response) {
+      document.getElementById('payment-form').style.display = 'none';
+      
+      // Create hidden form fields
+      var form = document.getElementById('payment-form');
+      form.innerHTML += '<input type="hidden" name="razorpay_payment_id" value="' + response.razorpay_payment_id + '">';
+      form.innerHTML += '<input type="hidden" name="razorpay_order_id" value="' + response.razorpay_order_id + '">';
+      form.innerHTML += '<input type="hidden" name="razorpay_signature" value="' + response.razorpay_signature + '">';
+      
+      form.submit();
+    },
+    prefill: {
+      email: "{{ current_user.email }}",
+      contact: "9999999999"
+    },
+    theme: {
+      color: "#2563eb"
+    }
+  };
+  
+  var rzp1 = new Razorpay(options);
+  rzp1.open();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% block title %}Home - MentorHub{% endblock %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="hero">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <h1><i class="fas fa-rocket"></i> Welcome to MentorHub</h1>
+            <p class="lead mb-4">Connect with expert mentors and accelerate your learning journey. Get personalized guidance from industry professionals.</p>
+            {% if not current_user.is_authenticated %}
+                <div class="d-flex gap-3">
+                    <a href="/auth/register" class="btn btn-light btn-lg">
+                        <i class="fas fa-user-plus"></i> Get Started
+                    </a>
+                    <a href="/auth/login" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </div>
+            {% else %}
+                <a href="/mentors" class="btn btn-light btn-lg">
+                    <i class="fas fa-search"></i> Find Your Mentor
+                </a>
+            {% endif %}
+        </div>
+        <div class="col-lg-6 text-center">
+            <i class="fas fa-users fa-10x" style="color: rgba(255,255,255,0.1);"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+{% if current_user.is_authenticated %}
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="fas fa-graduation-cap fa-2x" style="color: var(--primary);"></i>
+            <div class="stat-number">75+</div>
+            <div class="stat-label">Active Students</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="fas fa-chalkboard-user fa-2x" style="color: var(--secondary);"></i>
+            <div class="stat-number">20+</div>
+            <div class="stat-label">Expert Mentors</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="fas fa-calendar-check fa-2x" style="color: var(--success);"></i>
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Sessions Booked</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="fas fa-star fa-2x" style="color: var(--warning);"></i>
+            <div class="stat-number">4.8/5</div>
+            <div class="stat-label">Average Rating</div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-3 mb-4">
+    {% if current_user.is_mentor() or current_user.is_admin() %}
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-alt fa-3x mb-3" style="color: var(--primary);"></i>
+                    <h5 class="card-title">Manage Sessions</h5>
+                    <p class="card-text">View and manage your mentoring sessions.</p>
+                    <a href="/sessions" class="btn btn-sm btn-primary">
+                        <i class="fas fa-arrow-right"></i> View
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    {% if current_user.is_student() %}
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-search fa-3x mb-3" style="color: var(--secondary);"></i>
+                    <h5 class="card-title">Find Mentors</h5>
+                    <p class="card-text">Browse and connect with expert mentors.</p>
+                    <a href="/mentors" class="btn btn-sm btn-primary">
+                        <i class="fas fa-arrow-right"></i> Explore
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-envelope fa-3x mb-3" style="color: var(--info);"></i>
+                <h5 class="card-title">Messages</h5>
+                <p class="card-text">Stay connected with your mentors.</p>
+                <a href="/messages" class="btn btn-sm btn-primary">
+                    <i class="fas fa-arrow-right"></i> Open
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-user-circle fa-3x mb-3" style="color: var(--success);"></i>
+                <h5 class="card-title">My Profile</h5>
+                <p class="card-text">Update your profile and preferences.</p>
+                <a href="/profile" class="btn btn-sm btn-primary">
+                    <i class="fas fa-arrow-right"></i> Edit
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 class="mb-4"><i class="fas fa-lightbulb"></i> Why Choose MentorHub?</h2>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <i class="fas fa-check-circle fa-2x mb-3" style="color: var(--success);"></i>
+                <h5 class="card-title">Expert Mentors</h5>
+                <p class="card-text">Learn from industry professionals with years of experience.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <i class="fas fa-calendar-alt fa-2x mb-3" style="color: var(--warning);"></i>
+                <h5 class="card-title">Flexible Scheduling</h5>
+                <p class="card-text">Book sessions that fit your schedule perfectly.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <i class="fas fa-award fa-2x mb-3" style="color: var(--primary);"></i>
+                <h5 class="card-title">Proven Results</h5>
+                <p class="card-text">Join hundreds of students who achieved their goals.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- Unauthenticated Hero Content -->
+<div class="row mt-5">
+    <div class="col-lg-8 mx-auto">
+        <h2 class="mb-4 text-center">Start Your Learning Journey Today</h2>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-graduate fa-3x mb-3" style="color: var(--primary);"></i>
+                        <h5 class="card-title">For Students</h5>
+                        <p class="card-text">Get personalized guidance from expert mentors. Find the right mentor for your learning goals.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chalkboard-user fa-3x mb-3" style="color: var(--secondary);"></i>
+                        <h5 class="card-title">For Mentors</h5>
+                        <p class="card-text">Share your expertise and make an impact. Help students achieve their career goals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

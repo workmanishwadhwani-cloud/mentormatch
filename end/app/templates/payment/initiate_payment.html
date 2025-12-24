@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+          <h2 class="fw-bold text-dark mb-4">Complete Payment</h2>
+
+          <div class="alert alert-info mb-4">
+            <i class="fa-solid fa-info-circle me-2"></i>
+            <strong>Session Details:</strong><br/>
+            Topic: {{ session.topic }}<br/>
+            Mentor: {{ session.mentor_id }}<br/>
+            Date: {{ session.scheduled_at.strftime('%B %d, %Y at %I:%M %p') }}
+          </div>
+
+          <form method="post" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="mb-4">
+              {{ form.amount.label(class_='form-label fw-bold') }}
+              {{ form.amount(class_='form-control form-control-lg') }}
+              {% if form.amount.errors %}
+                <div class="text-danger small mt-2">{{ form.amount.errors[0] }}</div>
+              {% endif %}
+              <small class="text-muted d-block mt-2">
+                Suggested rate: ₹{{ hourly_rate }}/hour (1 hour session)
+              </small>
+            </div>
+
+            <div class="mb-4">
+              {{ form.payment_method.label(class_='form-label fw-bold') }}
+              {{ form.payment_method(class_='form-select form-select-lg') }}
+              {% if form.payment_method.errors %}
+                <div class="text-danger small mt-2">{{ form.payment_method.errors[0] }}</div>
+              {% endif %}
+            </div>
+
+            <div class="card bg-light mb-4">
+              <div class="card-body">
+                <h5 class="fw-bold">Payment Info</h5>
+                <p class="mb-2"><strong>Secure powered by Razorpay</strong></p>
+                <p class="text-muted small mb-0">Your payment information is encrypted and secure. We support credit cards, debit cards, net banking, and UPI.</p>
+              </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a href="/sessions" class="btn btn-outline-secondary">Cancel</a>
+              {{ form.submit(class_='btn btn-primary btn-lg') }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
